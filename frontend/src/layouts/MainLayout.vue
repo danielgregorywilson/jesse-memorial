@@ -75,9 +75,15 @@ export default class MainLayout extends Vue{
     if (!this.$store.getters['userModule/isProfileLoaded']) { // eslint-disable-line @typescript-eslint/no-unsafe-member-access
       this.$store.dispatch('userModule/userRequest')
         .catch(e => {
-          console.error('Error getting user from store', e)
+          console.error('Error getting user from store:', e)
         })
     }
+  }
+  public getImages(): void {
+    this.$store.dispatch('memoriesModule/getImages')
+      .catch(e => {
+        console.error('Error getting images from store:', e)
+      })
   }
   public logout(): void {
     this.$store.dispatch('authModule/authLogout')
@@ -93,6 +99,7 @@ export default class MainLayout extends Vue{
   }
   mounted() {
     this.getCurrentUser();
+    this.getImages();
   }
 };
 </script>

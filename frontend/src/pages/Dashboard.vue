@@ -1,56 +1,31 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="q-py-md">
-      <div class="text-h4 q-mb-md">Your Next Review</div>
-      <div v-if="getNextReview().employee_pk">
-        <div class="q-mb-sm">Current Perforance Period: {{ getNextReview().period_start_date | readableDate }} - {{ getNextReview().period_end_date | readableDate }}</div>
-        <div v-if="nextReviewNeedsEvaluation()">Your manager has not yet completed their evaluation.</div>
-        <div v-if="!nextReviewNeedsEvaluation() && !userSignedNextEvaluation()">
-          <div>Your manager has completed their evaluation and it is ready for your review.</div>
-          <q-btn @click="viewReview(getNextReview().pk)">View and Sign Evaluation</q-btn>
-        </div>
-        <q-btn v-if="!nextReviewNeedsEvaluation() && userSignedNextEvaluation()" @click="viewReview(getNextReview().pk)">View Evaluation</q-btn>
-
-      </div>
-      <div v-else>
-        <div class="text-body1">You do not have a scheduled upcoming review</div>
-      </div>
+    <div class="row q-gutter-md justify-between">
+      <div v-for="image in images()" :key="image.pk" class="memory-container" ><img class="memory-image" :src="image.image" /></div>
+      <div v-for="image in images()" :key="image.pk" class="memory-container" ><img class="memory-image" :src="image.image" /></div>
+      <div v-for="image in images()" :key="image.pk" class="memory-container" ><img class="memory-image" :src="image.image" /></div>
     </div>
-    <div class="q-py-md" v-if="isManager()">
-      <div class="row items-center q-mb-md">
-        <q-avatar icon="insert_chart_outlined" color="primary" text-color="white" font-size="32px" class="q-mr-sm" />
-        <div class="text-h4">Review Notes</div>
-      </div>
-      <review-note-table />
-    </div>
-    <div class="q-py-md" v-if="isManager()">
-      <div class="row items-center q-mb-md">
-        <q-avatar icon="assignment_ind" color="primary" text-color="white" font-size="32px" class="q-mr-sm" />
-        <div class="text-h4">Reviews for your Direct Reports</div>
-      </div>
-      <div class="text-h6">Action Required</div>
-        <performance-review-table :actionRequired="true" />
-      <div class="text-h6">No Action Required</div>
-        <performance-review-table :actionRequired="false" />
-    </div>
-    <div class="q-py-md" v-if="isUpperManager() || isTheHRManager() || isTheExecutiveDirector()">
-      <div class="row items-center q-mb-md">
-        <q-avatar icon="assignment_ind" color="primary" text-color="white" font-size="32px" class="q-mr-sm" />
-        <div class="text-h4">Reviews to Sign</div>
-      </div>
-      <div class="text-h6">Signature Required</div>
-        <performance-review-table :signature="true" :actionRequired="true" />
-      <div class="text-h6">Signed</div>
-        <performance-review-table :signature="true" :actionRequired="false" />
-    </div>
+    {{ images() }}
   </q-page>
 </template>
+
+<style scoped>
+  .memory-container {
+    width: 250px;
+    height: 250px;
+    border: 1px solid black;
+  }
+  .memory-image {
+    max-width: 100%;
+    max-height: 100%;
+  }
+</style>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import ReviewNoteTable from '../components/ReviewNoteTable.vue';
 import PerformanceReviewTable from '../components/PerformanceReviewTable.vue';
-import { PerformanceReviewRetrieve } from '../store/types'
+import { ImageRetrieve, PerformanceReviewRetrieve } from '../store/types'
 
 @Component({
   components: { PerformanceReviewTable, ReviewNoteTable }
@@ -58,7 +33,33 @@ import { PerformanceReviewRetrieve } from '../store/types'
 export default class Dashboard extends Vue {
   private currentIndex = -1
   private title = ''
-  private nextReviewDate?: Date
+  // private images: Array<ImageRetrieve> = []
+
+  private images() {
+    return this.$store.getters['memoriesModule/images'].results
+  }
+  
+  // private retrieveImages() {
+  //   return new Promise((resolve, reject) => {
+  //     this.$store.dispatch('userModule/getAllImages')
+  //       .then(() => {
+  //         this.images = this.$store.getters['userModule/getAllImages'] // eslint-disable-line
+  //         console.log(this.images)
+  //         resolve()
+  //       })
+  //       .catch(e => {
+  //         console.error('Error retrieving Images from API:', e)
+  //         reject(e)
+  //       })
+  //   })
+  // }
+
+  // private getAllImages(): ImageRetrieve {
+  //   debugger
+    
+  //   return this.$store.getters['userModule/getAllImages'] // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+  // }
+  
   private isManager(): boolean {
     return this.$store.getters['userModule/getEmployeeProfile'].is_manager // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
   }
@@ -97,6 +98,13 @@ export default class Dashboard extends Vue {
       .catch(e => {
         console.error('Error navigating to PR detail', e)
       })
+  }
+
+  mounted() {
+    // this.retrieveImages()
+    //   .catch(e => {
+    //     console.error('Error retrieving images:', e)
+    //   })
   }
 };
 </script>

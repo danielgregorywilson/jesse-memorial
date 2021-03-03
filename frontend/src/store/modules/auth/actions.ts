@@ -31,8 +31,6 @@ const actions: ActionTree<AuthStateInterface, StateInterface> = {
       commit('authLogout')
       dispatch('userModule/authLogout', null, { root: true })
         .catch(err => console.log(err))
-      dispatch('performanceReviewModule/authLogout', null, { root: true })
-        .catch(err => console.log(err))
       localStorage.removeItem('user-token') // clear your user's token from localstorage
       resolve()
     })

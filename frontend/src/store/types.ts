@@ -25,6 +25,14 @@ export interface AxiosUserRetrieveOneServerResponse {
   data: UserRetrieve
 }
 
+
+
+export interface ImageRetrieve {
+  pk: number
+  image: string
+}
+
+
 ///////////////////////////////////////////////////
 // Employee Structure from Django Rest Framework //
 ///////////////////////////////////////////////////
