@@ -1,56 +1,35 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row q-gutter-md justify-between">
-      <div v-for="memory in memories" :key="memory.key" class="memory-container" @click="carousel = true">
+      <div v-for="memory in memories" :key="memory.key" class="memory-container" @click="openCarousel(memory.key)">
         <img v-if="memory.type == 'image'" class="memory-image" :src="memory.image" />
-        <div v-if="memory.type == 'story'" class="memory-image">{{ memory.story }}</div>
-        <div v-if="memory.type == 'video'" class="memory-container" ><q-avatar icon="ondemand_video" color="primary" text-color="white" />{{ memory.video }}</div>
-        <div v-if="memory.type == 'audio'" class="memory-container" ><q-avatar icon="headset" color="primary" text-color="white" />{{ memory.audio }}</div>
+        <div v-if="memory.type == 'story'">{{ memory.story }}</div>
+        <div v-if="memory.type == 'video'"><q-avatar icon="ondemand_video" color="primary" text-color="white" /><q-icon name="ondemand_video" color="primary" size="56px" />{{ memory.video }}</div>
+        <div v-if="memory.type == 'audio'"><q-avatar icon="headset" color="primary" text-color="white" /><q-icon name="headset" color="primary" size="56px" />{{ memory.audio }}</div>
       </div>
     </div>
 
-    <q-dialog v-model="carousel">
+    <q-dialog v-model="carousel" full-width full-height>
       <q-carousel
+        v-model="slide"
+        animated
         transition-prev="slide-right"
         transition-next="slide-left"
         swipeable
-        animated
-        v-model="slide"
         control-color="primary"
-        navigation-icon="radio_button_unchecked"
-        navigation
-        padding
-        height="200px"
+        arrows
         class="bg-white shadow-1 rounded-borders"
       >
-        <q-carousel-slide :name="1" class="column no-wrap flex-center">
-          <q-icon name="style" color="primary" size="56px" />
-          <div class="q-mt-md text-center">
-            lorem
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide :name="2" class="column no-wrap flex-center">
-          <q-icon name="live_tv" color="primary" size="56px" />
-          <div class="q-mt-md text-center">
-            lorem
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide :name="3" class="column no-wrap flex-center">
-          <q-icon name="layers" color="primary" size="56px" />
-          <div class="q-mt-md text-center">
-            lorem
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide :name="4" class="column no-wrap flex-center">
-          <q-icon name="terrain" color="primary" size="56px" />
-          <div class="q-mt-md text-center">
-            lorem
-          </div>
+        <q-carousel-slide v-for="memory in memories" :key="memory.key" :name="memory.key" class="column no-wrap flex-center">
+          <img v-if="memory.type == 'image'" :src="memory.image" />
+          <div v-if="memory.type == 'story'">{{ memory.story }}</div>
+          <video v-if="memory.type == 'video'" width="320" height="240" controls>
+            <source :src="memory.video" type="video/mp4">
+          </video>
+          <audio v-if="memory.type == 'audio'" controls :src="memory.audio" />
         </q-carousel-slide>
       </q-carousel>
     </q-dialog>
-
-    {{ memories }}
   </q-page>
 </template>
 
@@ -80,7 +59,7 @@ export default class Dashboard extends Vue {
   private title = ''
   private memories = []
   private carousel = false
-  private slide = 1
+  private slide = ""
 
   private images() {
     let images = this.$store.getters['memoriesModule/images'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
@@ -137,9 +116,11 @@ export default class Dashboard extends Vue {
     });
   }
 
+  private openCarousel(key: string): void {
+    this.slide = key
+    this.carousel = true
+  }
 
-
-  
   private isManager(): boolean {
     return this.$store.getters['userModule/getEmployeeProfile'].is_manager // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
   }

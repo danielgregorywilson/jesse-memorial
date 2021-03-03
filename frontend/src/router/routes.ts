@@ -59,38 +59,7 @@ const routes: RouteConfig[] = [
         path: '/dashboard',
         name: 'dashboard',
         component: () => import('pages/Dashboard.vue'),
-        beforeEnter: ifAuthenticated,
       },
-      {
-        path: '/reviews',
-        name: 'reviews',
-        component: () => import('pages/PerformanceReviews.vue'),
-        beforeEnter: ifManager,
-      },
-      {
-        path: '/note/new',
-        name: 'note-create',
-        component: () => import('pages/ReviewNoteCreate.vue'),
-        beforeEnter: ifManager,
-      },
-      {
-        path: '/note/:pk',
-        name: 'note-details',
-        component: () => import('pages/ReviewNoteDetail.vue'),
-        beforeEnter: ifCanViewNote,
-      },
-      {
-        path: '/pr/:pk',
-        name: 'pr-details',
-        component: () => import('pages/PerformanceReviewDetail.vue'),
-        beforeEnter: ifCanViewReview,
-      },
-      {
-        path: '/timeoff',
-        name: 'timeoff',
-        component: () => import('pages/TimeOffRequests.vue'),
-        beforeEnter: ifAuthenticated,
-      }
     ]
   },
   {
