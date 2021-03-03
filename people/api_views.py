@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import Group, User
 from django.shortcuts import get_object_or_404
 
-from .models import Image
+from .models import Audio, Image, Story, Video
 
 # from mainsite.helpers import (
 #     is_true_string, send_evaluation_written_email_to_employee,
@@ -19,7 +19,10 @@ from .models import Image
 # )
 
 
-from people.serializers import GroupSerializer, ImageSerializer, UserSerializer
+from people.serializers import (
+    AudioSerializer, GroupSerializer, ImageSerializer, StorySerializer,
+    UserSerializer, VideoSerializer
+)
 
 
 # class IsAdminOrReadOnly(BasePermission):
@@ -63,10 +66,29 @@ class GroupViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAdminOrReadOnly]
 
 
+class StoryViewSet(viewsets.ModelViewSet):
+    queryset = Story.objects.filter(approved=True)
+    serializer_class = StorySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+
 class ImageViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
+    queryset = Image.objects.filter(approved=True)
     serializer_class = ImageSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class VideoViewSet(viewsets.ModelViewSet):
+    queryset = Video.objects.filter(approved=True)
+    serializer_class = VideoSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class AudioViewSet(viewsets.ModelViewSet):
+    queryset = Audio.objects.filter(approved=True)
+    serializer_class = AudioSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 # class EmployeeViewSet(viewsets.ModelViewSet):
 #     """

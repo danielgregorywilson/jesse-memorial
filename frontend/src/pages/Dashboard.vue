@@ -1,11 +1,56 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row q-gutter-md justify-between">
-      <div v-for="image in images()" :key="image.pk" class="memory-container" ><img class="memory-image" :src="image.image" /></div>
-      <div v-for="image in images()" :key="image.pk" class="memory-container" ><img class="memory-image" :src="image.image" /></div>
-      <div v-for="image in images()" :key="image.pk" class="memory-container" ><img class="memory-image" :src="image.image" /></div>
+      <div v-for="memory in memories" :key="memory.key" class="memory-container" @click="carousel = true">
+        <img v-if="memory.type == 'image'" class="memory-image" :src="memory.image" />
+        <div v-if="memory.type == 'story'" class="memory-image">{{ memory.story }}</div>
+        <div v-if="memory.type == 'video'" class="memory-container" ><q-avatar icon="ondemand_video" color="primary" text-color="white" />{{ memory.video }}</div>
+        <div v-if="memory.type == 'audio'" class="memory-container" ><q-avatar icon="headset" color="primary" text-color="white" />{{ memory.audio }}</div>
+      </div>
     </div>
-    {{ images() }}
+
+    <q-dialog v-model="carousel">
+      <q-carousel
+        transition-prev="slide-right"
+        transition-next="slide-left"
+        swipeable
+        animated
+        v-model="slide"
+        control-color="primary"
+        navigation-icon="radio_button_unchecked"
+        navigation
+        padding
+        height="200px"
+        class="bg-white shadow-1 rounded-borders"
+      >
+        <q-carousel-slide :name="1" class="column no-wrap flex-center">
+          <q-icon name="style" color="primary" size="56px" />
+          <div class="q-mt-md text-center">
+            lorem
+          </div>
+        </q-carousel-slide>
+        <q-carousel-slide :name="2" class="column no-wrap flex-center">
+          <q-icon name="live_tv" color="primary" size="56px" />
+          <div class="q-mt-md text-center">
+            lorem
+          </div>
+        </q-carousel-slide>
+        <q-carousel-slide :name="3" class="column no-wrap flex-center">
+          <q-icon name="layers" color="primary" size="56px" />
+          <div class="q-mt-md text-center">
+            lorem
+          </div>
+        </q-carousel-slide>
+        <q-carousel-slide :name="4" class="column no-wrap flex-center">
+          <q-icon name="terrain" color="primary" size="56px" />
+          <div class="q-mt-md text-center">
+            lorem
+          </div>
+        </q-carousel-slide>
+      </q-carousel>
+    </q-dialog>
+
+    {{ memories }}
   </q-page>
 </template>
 
@@ -25,7 +70,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import ReviewNoteTable from '../components/ReviewNoteTable.vue';
 import PerformanceReviewTable from '../components/PerformanceReviewTable.vue';
-import { ImageRetrieve, PerformanceReviewRetrieve } from '../store/types'
+import { PerformanceReviewRetrieve } from '../store/types'
 
 @Component({
   components: { PerformanceReviewTable, ReviewNoteTable }
@@ -33,32 +78,67 @@ import { ImageRetrieve, PerformanceReviewRetrieve } from '../store/types'
 export default class Dashboard extends Vue {
   private currentIndex = -1
   private title = ''
-  // private images: Array<ImageRetrieve> = []
+  private memories = []
+  private carousel = false
+  private slide = 1
 
   private images() {
-    return this.$store.getters['memoriesModule/images'].results
+    let images = this.$store.getters['memoriesModule/images'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+    images.forEach(image => {
+      image.key = `image-${image.pk}`
+      image.type = 'image'
+    })
+    return images
   }
-  
-  // private retrieveImages() {
-  //   return new Promise((resolve, reject) => {
-  //     this.$store.dispatch('userModule/getAllImages')
-  //       .then(() => {
-  //         this.images = this.$store.getters['userModule/getAllImages'] // eslint-disable-line
-  //         console.log(this.images)
-  //         resolve()
-  //       })
-  //       .catch(e => {
-  //         console.error('Error retrieving Images from API:', e)
-  //         reject(e)
-  //       })
-  //   })
-  // }
 
-  // private getAllImages(): ImageRetrieve {
-  //   debugger
-    
-  //   return this.$store.getters['userModule/getAllImages'] // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-  // }
+  private stories() {
+    let stories = this.$store.getters['memoriesModule/stories'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+    stories.forEach(story => {
+      story.key = `story-${story.pk}`
+      story.type = 'story'
+    })
+    return stories
+  }
+
+  private videos() {
+    let videos = this.$store.getters['memoriesModule/videos'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+    videos.forEach(video => {
+      video.key = `video-${video.pk}`
+      video.type = 'video'
+    })
+    return videos
+  }
+
+  private audio() {
+    let audio = this.$store.getters['memoriesModule/audio'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+    audio.forEach(audio => {
+      audio.key = `audio-${audio.pk}`
+      audio.type = 'audio'
+    })
+    return audio
+  }
+
+  private getMemories() {
+    let memories = []
+    Promise.all([
+      this.$store.dispatch('memoriesModule/getImages'),
+      this.$store.dispatch('memoriesModule/getStories'),
+      this.$store.dispatch('memoriesModule/getVideos'),
+      this.$store.dispatch('memoriesModule/getAudio')
+    ]).then(() => {
+      this.images().forEach(imageMemory => memories.push(imageMemory))
+      this.stories().forEach(storyMemory => memories.push(storyMemory))
+      this.videos().forEach(videoMemory => memories.push(videoMemory))
+      this.audio().forEach(audioMemory => memories.push(audioMemory))
+      this.memories = memories
+        .map((a) => ({sort: Math.random(), value: a}))
+        .sort((a, b) => a.sort - b.sort)
+        .map((a) => a.value)
+    });
+  }
+
+
+
   
   private isManager(): boolean {
     return this.$store.getters['userModule/getEmployeeProfile'].is_manager // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
@@ -105,6 +185,7 @@ export default class Dashboard extends Vue {
     //   .catch(e => {
     //     console.error('Error retrieving images:', e)
     //   })
+    this.getMemories()
   }
 };
 </script>

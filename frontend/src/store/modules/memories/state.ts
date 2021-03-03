@@ -1,31 +1,35 @@
-// TODO
-interface ReviewNoteInterface {
-  employee: unknown
-  note: string
-}
-
-// TODO: Update to match shape of frontend/src.store/types/PerformanceReviewRetrieve
-export interface PerformanceReviewInterface {
-  pk?: number
-  employee_pk?: number
-  employee_name: string
-  performance_period: string
-  days_until_review: string
-  status: string
-  evaluation: string
-}
-
 export interface Image {
   pk: number
   image: string
 }
 
+export interface Story {
+  pk: number
+  story: string
+}
+
+export interface Video {
+  pk: number
+  video: string
+}
+
+export interface Audio {
+  pk: number
+  audio: string
+}
+
 export interface MemoriesStateInterface {
   images: Array<Image>
+  stories: Array<Story>
+  videos: Array<Video>
+  audio: Array<Audio>
 }
 
 const state: MemoriesStateInterface = {
   images: [],
+  stories: [],
+  videos: [],
+  audio: [],
 };
 
 export default state;

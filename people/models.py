@@ -4,14 +4,18 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 
-class Upload(models.Model):
+class Memory(models.Model):
     class Meta:
         abstract = True
 
-    uploaded_by = models.ForeignKey("auth.User", verbose_name=_("user"), on_delete=models.CASCADE)
+    uploaded_by = models.ForeignKey("auth.User", verbose_name=_("uploaded by"), on_delete=models.CASCADE)
+    title = models.TextField(blank=True)
+    description = models.TextField(blank=True)
+    date = models.DateField(blank=True, null=True)
+    approved = models.BooleanField(default=False)
 
 
-class Story(Upload):
+class Story(Memory):
     class Meta:
         verbose_name = _("Story")
         verbose_name_plural = _("Stories")
@@ -19,7 +23,7 @@ class Story(Upload):
     story = models.TextField(blank=True, null=True)
 
 
-class Image(Upload):
+class Image(Memory):
     class Meta:
         verbose_name = _("Image")
         verbose_name_plural = _("Images")
@@ -27,6 +31,20 @@ class Image(Upload):
     image = models.ImageField(upload_to="uploads/images")
 
 
+class Video(Memory):
+    class Meta:
+        verbose_name = _("Video")
+        verbose_name_plural = _("Videos")
+
+    video = models.FileField(upload_to="uploads/videos")
+
+
+class Audio(Memory):
+    class Meta:
+        verbose_name = _("Audio")
+        verbose_name_plural = _("Audios")
+
+    audio = models.FileField(upload_to="uploads/audio")
 
 
 # class PerformanceReview(models.Model):

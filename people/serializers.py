@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group, User
 
 from rest_framework import serializers
 
-from .models import Image, Story
+from .models import Audio, Image, Story, Video
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,11 +22,33 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['pk', 'url']
 
 
+class StorySerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Story
+        fields = ['pk', 'story']
+
+
 class ImageSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Image
         fields = ['pk', 'image']
+
+
+class VideoSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Video
+        fields = ['pk', 'video']
+
+
+class AudioSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Audio
+        fields = ['pk', 'audio']
+
 
 # class PerformanceReviewFileUploadSerializer(serializers.HyperlinkedModelSerializer):
 #     signed_position_description = serializers.FileField()

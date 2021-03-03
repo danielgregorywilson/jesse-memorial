@@ -85,6 +85,24 @@ export default class MainLayout extends Vue{
         console.error('Error getting images from store:', e)
       })
   }
+  public getStories(): void {
+    this.$store.dispatch('memoriesModule/getStories')
+      .catch(e => {
+        console.error('Error getting stories from store:', e)
+      })
+  }
+  public getVideos(): void {
+    this.$store.dispatch('memoriesModule/getVideos')
+      .catch(e => {
+        console.error('Error getting videos from store:', e)
+      })
+  }
+  public getAudio(): void {
+    this.$store.dispatch('memoriesModule/getAudio')
+      .catch(e => {
+        console.error('Error getting audio from store:', e)
+      })
+  }
   public logout(): void {
     this.$store.dispatch('authModule/authLogout')
     .then(() => {
@@ -100,6 +118,9 @@ export default class MainLayout extends Vue{
   mounted() {
     this.getCurrentUser();
     this.getImages();
+    this.getStories();
+    this.getVideos();
+    this.getAudio();
   }
 };
 </script>
