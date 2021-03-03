@@ -1,0 +1,6 @@
+*.pyc
+
+settings_local.py
+
+media
+sent_emails
