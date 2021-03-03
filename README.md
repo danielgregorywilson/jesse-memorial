@@ -1,12 +1,30 @@
 # lcog-hr
 
-# Set up a Postgres server locally
-1) Download Postgres and pgAdmin apps
-2) Follow these steps: https://djangocentral.com/using-postgresql-with-django/
+# Setting up for the first time
+Create a copy of mainsite/settings_local.py.example (remove the '.example')
+## Set up a Postgres server locally
+-Download Postgres and pgAdmin apps
+-Follow these steps: https://djangocentral.com/using-postgresql-with-django/
     -Create a database called 'hr_app'
     -Create a DB user for the DB
     -Set defaults for user (e.g. utf-8) and grant DB permissions to user
-3) Set DB name, username, and password in settings_local
+-Set DB name, username, and password in settings_local
+## Set up Python/Django environment
+Create a Python virtualenv in the parent directory of the source controlled code
+`virtualenv env_20210302` (the date)
+Create a symlink to the dated virtualenv
+`ln -s env_20210302 env`
+Activate the virtual environment
+`source env/bin/activate` 
+Install requirements (pip version pip 20.1.1 (python 3.8))
+`pip install -r code/requirements.txt`
+Run Django migrations
+`./manage.py migrate`
+Create a superuser to log in to backend
+`./manage.py createsuperuser`
+## Set up Quasar frontend
+`cd frontend`
+`npm install`
 
 
 # Run the backend locally
