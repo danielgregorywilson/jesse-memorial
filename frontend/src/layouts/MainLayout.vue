@@ -20,6 +20,33 @@
       </q-toolbar>
     </q-header>
 
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+      content-class="bg-grey-1"
+      :width="210"
+    >
+      <q-list>
+        <NavLink
+          v-for="link in navLinks"
+          :key="link.title"
+          v-bind="link"
+        />
+        <q-item
+          clickable
+          @click='logout'
+        >
+          <q-item-section avatar>
+            <q-icon name='west' />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Log Out</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -40,12 +67,12 @@ interface LinkData {
 
 const linksData: Array<LinkData> = [
   {
-    title: 'Dashboard',
+    title: 'Register',
     icon: 'dashboard',
     link: '/dashboard'
   },
   {
-    title: 'Performance Reviews',
+    title: 'Login',
     icon: 'assignment_turned_in',
     link: '/reviews',
     managerOnly: true
