@@ -30,7 +30,7 @@ ALLOWED_HOSTS = [
     'localhost',
     'jesse-memorial',
     'lcog-hr-frontend.s3-website-us-west-2.amazonaws.com',
-    'jesse-env.eba-zcmc4qif.us-west-2.elasticbeanstalk.com'
+    'jesse-env.eba-ptmwzsmh.us-west-2.elasticbeanstalk.com'
 ]
 
 # Application definition

@@ -37,6 +37,10 @@ Start the server
 `cd frontend`
 `quasar dev`
 
+# Deploying for the first time
+Backend
+https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html#python-django-deploy
+
 # Deploy backend
 In mainsite/middleware/CorsMiddleware, make sure the correct response["Access-Control-Allow-Origin"] is commented out.
 `eb deploy --profile lcog`
