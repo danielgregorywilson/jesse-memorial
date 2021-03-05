@@ -83,6 +83,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mainsite.wsgi.application'
 
+# Production secret key
+#SECURITY WARNING: keep the secret key used in production secret!
+if 'DJANGO_SECRET_KEY' in os.environ:
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+else: 
+    SECRET_KEY = DJANGO_SECRET_KEY
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
