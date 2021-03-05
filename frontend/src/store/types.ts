@@ -25,22 +25,30 @@ export interface AxiosUserRetrieveOneServerResponse {
   data: UserRetrieve
 }
 
-export interface ImageRetrieve {
+export interface Memory {
+  title: string
+  description: string
+  date: Date
+  type: string
+  key: string
+}
+
+export interface ImageRetrieve extends Memory {
   pk: number
   image: string
 }
 
-export interface StoryRetrieve {
+export interface StoryRetrieve extends Memory {
   pk: number
   story: string
 }
 
-export interface VideoRetrieve {
+export interface VideoRetrieve extends Memory {
   pk: number
   video: string
 }
 
-export interface AudioRetrieve {
+export interface AudioRetrieve extends Memory {
   pk: number
   audio: string
 }

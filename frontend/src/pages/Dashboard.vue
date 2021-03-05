@@ -49,7 +49,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import ReviewNoteTable from '../components/ReviewNoteTable.vue';
 import PerformanceReviewTable from '../components/PerformanceReviewTable.vue';
-import { PerformanceReviewRetrieve } from '../store/types'
+import { PerformanceReviewRetrieve, AudioRetrieve, ImageRetrieve, StoryRetrieve, VideoRetrieve } from '../store/types'
 
 @Component({
   components: { PerformanceReviewTable, ReviewNoteTable }
@@ -57,12 +57,12 @@ import { PerformanceReviewRetrieve } from '../store/types'
 export default class Dashboard extends Vue {
   private currentIndex = -1
   private title = ''
-  private memories = []
+  private memories: Array<AudioRetrieve|ImageRetrieve|StoryRetrieve|VideoRetrieve> = []
   private carousel = false
-  private slide = ""
+  private slide = ''
 
-  private images() {
-    let images = this.$store.getters['memoriesModule/images'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+  private images(): Array<ImageRetrieve> {
+    let images: Array<ImageRetrieve> = this.$store.getters['memoriesModule/images'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
     images.forEach(image => {
       image.key = `image-${image.pk}`
       image.type = 'image'
@@ -70,8 +70,8 @@ export default class Dashboard extends Vue {
     return images
   }
 
-  private stories() {
-    let stories = this.$store.getters['memoriesModule/stories'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+  private stories(): Array<StoryRetrieve> {
+    let stories: Array<StoryRetrieve> = this.$store.getters['memoriesModule/stories'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
     stories.forEach(story => {
       story.key = `story-${story.pk}`
       story.type = 'story'
@@ -79,8 +79,8 @@ export default class Dashboard extends Vue {
     return stories
   }
 
-  private videos() {
-    let videos = this.$store.getters['memoriesModule/videos'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+  private videos(): Array<VideoRetrieve> {
+    let videos: Array<VideoRetrieve> = this.$store.getters['memoriesModule/videos'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
     videos.forEach(video => {
       video.key = `video-${video.pk}`
       video.type = 'video'
@@ -88,8 +88,8 @@ export default class Dashboard extends Vue {
     return videos
   }
 
-  private audio() {
-    let audio = this.$store.getters['memoriesModule/audio'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+  private audio(): Array<AudioRetrieve> {
+    let audio: Array<AudioRetrieve> = this.$store.getters['memoriesModule/audio'].results // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
     audio.forEach(audio => {
       audio.key = `audio-${audio.pk}`
       audio.type = 'audio'
@@ -98,7 +98,7 @@ export default class Dashboard extends Vue {
   }
 
   private getMemories() {
-    let memories = []
+    let memories: Array<AudioRetrieve|ImageRetrieve|StoryRetrieve|VideoRetrieve> = []
     Promise.all([
       this.$store.dispatch('memoriesModule/getImages'),
       this.$store.dispatch('memoriesModule/getStories'),
@@ -113,7 +113,10 @@ export default class Dashboard extends Vue {
         .map((a) => ({sort: Math.random(), value: a}))
         .sort((a, b) => a.sort - b.sort)
         .map((a) => a.value)
-    });
+    })
+    .catch(e => {
+      console.error('Error getting all memories:', e)
+    })
   }
 
   private openCarousel(key: string): void {

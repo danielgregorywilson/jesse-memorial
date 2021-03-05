@@ -35,7 +35,6 @@
 <script lang="ts">
 import axios from 'axios';
 import { Component, Vue } from 'vue-property-decorator'
-import EmployeeDataService from '../../services/EmployeeDataService'
 
 @Component
 export default class Login extends Vue{
@@ -58,7 +57,10 @@ export default class Login extends Vue{
         this.$store.dispatch('authModule/authRequest', { username: email, password })
           .then(() => this.$router.push('/'))
           .catch((err) => console.log(err))
-      }) 
+      })
+      .catch(e => {
+        console.error('Error registering user:', e)
+      })
   }
 }
 </script>

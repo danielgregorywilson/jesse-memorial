@@ -135,11 +135,11 @@ export default class MainLayout extends Vue{
   }
 
   public profileLoaded(): boolean {
-    return this.$store.getters['userModule/isProfileLoaded']
+    return this.$store.getters['userModule/isProfileLoaded'] // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
   }
 
   public profile(): boolean {
-    return this.$store.getters['userModule/getEmployeeProfile']
+    return this.$store.getters['userModule/getEmployeeProfile'] // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
   }
 
   public getCurrentUser(): void {
