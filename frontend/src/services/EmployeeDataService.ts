@@ -1,6 +1,10 @@
 import http from '../http-common';
 
 class EmployeeDataService {
+  registerUser(email: string, password: string, first_name: string, last_name: string) {
+    return 
+  }
+  
   getAll() {
     return http.get('api/v1/employee');
   }

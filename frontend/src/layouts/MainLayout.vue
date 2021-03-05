@@ -2,21 +2,19 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          id="menu-button"
+          @click="leftDrawerOpen = !leftDrawerOpen"
+        />
 
         <q-toolbar-title>
-          Hi {{ name() }}
+          Celebrating Jesse
         </q-toolbar-title>
-
-        <div>
-          <q-item
-            clickable
-            @click='logout'
-          >
-            <q-item-section>
-              <q-item-label>Log Out</q-item-label>
-            </q-item-section>
-          </q-item>
-        </div>
       </q-toolbar>
     </q-header>
 
@@ -28,20 +26,71 @@
       :width="210"
     >
       <q-list>
-        <NavLink
-          v-for="link in navLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item
+          clickable
+          @click='register'
+          v-if="!profileLoaded()"
+        >
+          <q-item-section avatar>
+            <q-icon name='how_to_reg' />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Register</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          @click='login'
+          v-if="!profileLoaded()"
+        >
+          <q-item-section avatar>
+            <q-icon name='login' />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Log In</q-item-label>
+          </q-item-section>
+        </q-item>
+        
+        <q-item v-if="profileLoaded()">
+          <q-item-section avatar>
+            <q-icon name='person' />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{profile().name}} </q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item
           clickable
           @click='logout'
+          v-if="profileLoaded()"
         >
           <q-item-section avatar>
             <q-icon name='west' />
           </q-item-section>
           <q-item-section>
             <q-item-label>Log Out</q-item-label>
+          </q-item-section>
+        </q-item>
+        <hr />
+        <q-item
+          @click='filter'
+        >
+          <q-item-section avatar>
+            <q-icon name='filter_list' />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Filter</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          @click='upload'
+          v-if="profileLoaded()"
+        >
+          <q-item-section avatar>
+            <q-icon name='file_upload' />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Upload</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -54,48 +103,31 @@
 </template>
 
 <script lang="ts">
-import NavLink from 'components/NavLink.vue'
-
 import { Component, Vue } from 'vue-property-decorator'
 
 interface LinkData {
   title: string;
   icon: string;
   link: string;
-  managerOnly?: boolean;
 }
-
-const linksData: Array<LinkData> = [
-  {
-    title: 'Register',
-    icon: 'dashboard',
-    link: '/dashboard'
-  },
-  {
-    title: 'Login',
-    icon: 'assignment_turned_in',
-    link: '/reviews',
-    managerOnly: true
-  },
-  {
-    title: 'Time off Requests',
-    icon: 'schedule',
-    link: '/timeoff'
-  },
-];
 
 interface LayoutData {
   name: string
 }
 
-@Component({
-  components: { NavLink }
-})
+@Component({})
 export default class MainLayout extends Vue{
   private leftDrawerOpen = false;
-  private navLinks: Array<LinkData> = linksData;
   private name() {
     return this.$store.getters['userModule/getEmployeeProfile'].name // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+  }
+
+  public profileLoaded(): boolean {
+    return this.$store.getters['userModule/isProfileLoaded']
+  }
+
+  public profile(): boolean {
+    return this.$store.getters['userModule/getEmployeeProfile']
   }
 
   public getCurrentUser(): void {
@@ -130,20 +162,39 @@ export default class MainLayout extends Vue{
         console.error('Error getting audio from store:', e)
       })
   }
+  
+  public register(): void {
+    this.$router.push('/auth/register')
+      .catch(e => {
+        console.error('Error navigating to register page', e)
+      })
+  }
+
+  public login(): void {
+    this.$router.push({ name: 'login' })
+      .catch(e => {
+        debugger
+        console.error('Error navigating to register page', e)
+      })
+  }
+
   public logout(): void {
     this.$store.dispatch('authModule/authLogout')
-    .then(() => {
-      this.$router.push('/auth/login')
-        .catch(e => {
-          console.error('Error navigating to login page after logout', e)
-        })
-    })
     .catch(e => {
       console.error('Error logging out', e);
     })
   }
+
+  public filter(): void {
+    return
+  }
+
+  public upload(): void {
+    return
+  }
+
   mounted() {
-    this.getCurrentUser();
+    // this.getCurrentUser();
     this.getImages();
     this.getStories();
     this.getVideos();

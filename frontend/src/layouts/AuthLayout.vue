@@ -3,10 +3,10 @@
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title>
-          LCOG HR App
+          Celebrating Jesse
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>Built with Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
