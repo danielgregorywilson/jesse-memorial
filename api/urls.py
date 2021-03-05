@@ -3,7 +3,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from django.urls import include, path
 
-from api.views import RegisterView
+from api.views import RegisterView, UploadImageView, UploadStoryView, UploadVideoView, UploadAudioView
 from people.api_views import (
     AudioViewSet, CurrentUserView, GroupViewSet, ImageViewSet, StoryViewSet,
     UserViewSet, VideoViewSet
@@ -17,6 +17,10 @@ urlpatterns = [
     path('api-token-auth/', obtain_auth_token),
     path('v1/current-user/', CurrentUserView.as_view(), name='current_user'),
     path('register/', RegisterView.as_view(), name='auth_register'),
+    path('upload-image/', UploadImageView.as_view(), name='upload_image'),
+    path('upload-story/', UploadStoryView.as_view(), name='upload_story'),
+    path('upload-video/', UploadVideoView.as_view(), name='upload_video'),
+    path('upload-audio/', UploadAudioView.as_view(), name='upload_audio'),
 ]
 
 router = routers.DefaultRouter(trailing_slash=False)

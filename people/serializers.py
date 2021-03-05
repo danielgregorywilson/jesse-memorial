@@ -24,7 +24,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name']
         )
-
         return user
 
 
@@ -39,28 +38,77 @@ class StorySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Story
-        fields = ['pk', 'story']
+        fields = ['pk', 'story', 'title', 'description', 'date']
+
+    def create(self, validated_data):
+        story = Story.objects.create(
+            story=validated_data['story'],
+            uploaded_by=self.context['request'].user,
+            title=validated_data.get('title', ''),
+            description=validated_data.get('description', ''),
+        )
+        if 'date' in validated_data:
+            story.date = validated_data['date']
+            story.save()
+        return story
 
 
 class ImageSerializer(serializers.HyperlinkedModelSerializer):
+    date = serializers.DateField(required=False)
 
     class Meta:
         model = Image
-        fields = ['pk', 'image']
+        fields = ['pk', 'image', 'title', 'description', 'date']
+    
+    def create(self, validated_data):
+        image = Image.objects.create(
+            image=validated_data['image'],
+            uploaded_by=self.context['request'].user,
+            title=validated_data.get('title', ''),
+            description=validated_data.get('description', ''),
+        )
+        if 'date' in validated_data:
+            image.date = validated_data['date']
+            image.save()
+        return image
 
 
 class VideoSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Video
-        fields = ['pk', 'video']
+        fields = ['pk', 'video', 'title', 'description', 'date']
+    
+    def create(self, validated_data):
+        video = Video.objects.create(
+            video=validated_data['video'],
+            uploaded_by=self.context['request'].user,
+            title=validated_data.get('title', ''),
+            description=validated_data.get('description', ''),
+        )
+        if 'date' in validated_data:
+            video.date = validated_data['date']
+            video.save()
+        return video
 
 
 class AudioSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Audio
-        fields = ['pk', 'audio']
+        fields = ['pk', 'audio', 'title', 'description', 'date']
+
+    def create(self, validated_data):
+        audio = Audio.objects.create(
+            audio=validated_data['audio'],
+            uploaded_by=self.context['request'].user,
+            title=validated_data.get('title', ''),
+            description=validated_data.get('description', ''),
+        )
+        if 'date' in validated_data:
+            audio.date = validated_data['date']
+            audio.save()
+        return audio
 
 
 # class PerformanceReviewFileUploadSerializer(serializers.HyperlinkedModelSerializer):

@@ -60,6 +60,12 @@ const routes: RouteConfig[] = [
         name: 'dashboard',
         component: () => import('pages/Dashboard.vue'),
       },
+      {
+        path: '/upload',
+        name: 'upload',
+        component: () => import('pages/Upload.vue'),
+        beforeEnter: ifAuthenticated,
+      },
     ]
   },
   {

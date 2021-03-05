@@ -28,6 +28,17 @@
       <q-list>
         <q-item
           clickable
+          @click='gallery'
+        >
+          <q-item-section avatar>
+            <q-icon name='collections' />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Gallery</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
           @click='register'
           v-if="!profileLoaded()"
         >
@@ -83,6 +94,7 @@
           </q-item-section>
         </q-item>
         <q-item
+          clickable
           @click='upload'
           v-if="profileLoaded()"
         >
@@ -163,6 +175,13 @@ export default class MainLayout extends Vue{
       })
   }
   
+  public gallery(): void {
+    this.$router.push('/')
+      .catch(e => {
+        console.error('Error navigating to gallery page', e)
+      })
+  }
+
   public register(): void {
     this.$router.push('/auth/register')
       .catch(e => {
@@ -190,7 +209,10 @@ export default class MainLayout extends Vue{
   }
 
   public upload(): void {
-    return
+    this.$router.push('/upload')
+      .catch(e => {
+        console.error('Error navigating to upload page', e)
+      })
   }
 
   mounted() {
