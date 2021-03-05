@@ -172,6 +172,7 @@ STATICFILES_DIRS = [
 
 # Where to build static files
 # STATIC_ROOT = 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, "www", "static")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
