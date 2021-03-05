@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'mainsite.wsgi.application'
 if 'DJANGO_SECRET_KEY' in os.environ:
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 else: 
-    SECRET_KEY = DJANGO_SECRET_KEY
+    SECRET_KEY = '168!=oo8jkix^e@!d09wb-_f1u@%5cgv8qrdtbrs2v0y#^qeuy'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
