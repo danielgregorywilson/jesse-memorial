@@ -43,7 +43,7 @@ export default class Dashboard extends Vue {
   private description = ''
   private date = ''
 
-  private file: Blob = new Blob()
+  private file = new File([''], '')
   private story = ''
   private successfulUpload = false
 
