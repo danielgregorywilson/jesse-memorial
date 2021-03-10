@@ -192,7 +192,6 @@ export default class MainLayout extends Vue{
   public login(): void {
     this.$router.push({ name: 'login' })
       .catch(e => {
-        debugger
         console.error('Error navigating to register page', e)
       })
   }
