@@ -52,7 +52,7 @@ module.exports = configure(function (ctx) {
       vueRouterMode: 'history', // available values: 'hash', 'history'
       env: {
         API_URL: ctx.dev ? 'http://jesse-memorial:8000/' : 'https://celebrating-jesse.wl.r.appspot.com/'
-        // API_URL: 'http://lcog-internal-env.eba-4t9yrmiu.us-west-2.elasticbeanstalk.com/'
+        // API_URL: 'https://celebrating-jesse.wl.r.appspot.com/'
       },
 
       // transpile: false,

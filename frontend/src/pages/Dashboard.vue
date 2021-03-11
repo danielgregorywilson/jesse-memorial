@@ -124,46 +124,6 @@ export default class Dashboard extends Vue {
     this.carousel = true
   }
 
-  private isManager(): boolean {
-    return this.$store.getters['userModule/getEmployeeProfile'].is_manager // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-  }
-
-  private isUpperManager(): boolean {
-    return this.$store.getters['userModule/getEmployeeProfile'].is_upper_manager // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-  }
-
-  private isTheHRManager(): boolean {
-    return this.$store.getters['userModule/getEmployeeProfile'].is_hr_manager // eslint-disable-line
-  }
-
-  private isTheExecutiveDirector(): boolean {
-    return this.$store.getters['userModule/getEmployeeProfile'].is_executive_director // eslint-disable-line
-  }
-
-  private getNextReview(): PerformanceReviewRetrieve {
-    return this.$store.getters['performanceReviewModule/nextPerformanceReview'] // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-  }
-
-  private nextReviewNeedsEvaluation(): boolean {
-    return this.getNextReview().status == 'Needs evaluation'
-  }
-
-  private userSignedNextEvaluation(): boolean {
-    // Return if there is a date for the employee's signature on the review
-    if (this.getNextReview().all_required_signatures) {
-      return !!this.getNextReview().all_required_signatures[0][2]
-    } else {
-      return false
-    }
-  }
-
-  private viewReview(pk: number): void {
-    this.$router.push(`pr/${ pk }`)
-      .catch(e => {
-        console.error('Error navigating to PR detail', e)
-      })
-  }
-
   mounted() {
     // this.retrieveImages()
     //   .catch(e => {
