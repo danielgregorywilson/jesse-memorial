@@ -49,7 +49,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import ReviewNoteTable from '../components/ReviewNoteTable.vue';
 import PerformanceReviewTable from '../components/PerformanceReviewTable.vue';
-import { PerformanceReviewRetrieve, AudioRetrieve, ImageRetrieve, StoryRetrieve, VideoRetrieve } from '../store/types'
+import { AudioRetrieve, ImageRetrieve, StoryRetrieve, VideoRetrieve } from '../store/types'
 
 @Component({
   components: { PerformanceReviewTable, ReviewNoteTable }
