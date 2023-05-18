@@ -89,7 +89,7 @@ module.exports = configure(function (ctx) {
     devServer: {
       https: false,
       port: 8080,
-      open: true // opens browser window automatically
+      open: false // opens browser window automatically
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -199,7 +199,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'jesse-memorial'
+        appId: 'celebrating-jesse'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
